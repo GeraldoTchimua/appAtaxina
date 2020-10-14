@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>listar_assoc_Simples</title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <p:menubar>
+
+                <p:menuitem value="Página Principal" outcome="home" icon="ui-icon-home"> 
+                </p:menuitem>             
+
+                <p:submenu label="Cadastrar" icon="ui-icon-plus">
+                    <p:menuitem value="Associado Taxista" outcome="cadastrarAssocT" /> 
+                    <p:menuitem value="Associado Simples" outcome="cadastrarAssocS"/> 
+                </p:submenu>  
+
+                <p:submenu label="Registrar" icon="ui-icon-plus">                   
+                    <p:menuitem value="Relátorio" />
+                    <p:menuitem value="Cota" outcome="inserir-cota"/>
+                    <p:menuitem value="Carro" outcome="inserir-carro"/>
+                </p:submenu>
+
+                <p:submenu label="Visualizar">
+
+                    <p:submenu label="Associado">
+                        <p:menuitem value="Taxista" />
+                        <p:menuitem value="Simples" outcome="listar_assocSimples"/>
+                        <p:menuitem value="Todos" />
+                    </p:submenu>
+
+                    <p:menuitem value="Relátorio" />
+                    <p:menuitem value="Cota" outcome="listar_cota"/>
+                    <p:menuitem value="Carro" outcome="listar_carro"/>
+                </p:submenu>   
+
+                <p:submenu label="Pesquisar" icon="ui-icon-search" >  
+                    <p:menuitem value="Telefone" url="#"/>
+                    <p:menuitem value="Carro" url="#"/>
+                    <p:menuitem value="Associado" url="#"/>
+                </p:submenu>  
+            </p:menubar> 
+
+        </h:form>
+
+
+
+        <h:form>
+            <p:panel>
+                <b:dataTable value="#{carroCDIBean.listaCarros}" var="m"
+                             excel="true"
+                             csv="true"
+                             pdf="true"
+                             columnVisibility="true"
+                             copy="true"
+                             print="true">
+
+                    <b:dataTableColumn value="#{m.idCarro}"  />
+                    <b:dataTableColumn value="#{m.modelo}" />
+                    <b:dataTableColumn value="#{m.matricula}" />
+                    <b:dataTableColumn value="#{m.nomeTaxista}" />
+                    
+
+                </b:dataTable>
+            </p:panel>
+        </h:form>
+        
+        <form>
+            <p:dataTable id="tabelaMostrarAssocS" var="car" value="#{carroCDIBean.listaCarros}"
+                         emptyMessage="Não há dados de Associados Simples">
+                
+                <p:column headerText="Número de Registro">
+                    <h:outputText value="#{car.idCarro}"/>
+                </p:column>
+                
+                 <p:column headerText="Modelo">
+                     <h:outputText value="#{car.modelo}"/>
+                </p:column>
+                
+                 <p:column headerText="Matrícula">
+                     <h:outputText value="#{car.matricula}"/>
+                </p:column>
+                
+                 <p:column headerText="Nome do Taxista">
+                     <h:outputText value="#{car.nomeTaxista}"/>
+                </p:column>
+                
+                
+                
+                 <p:column>
+                     <p:commandButton value="Modificar" actionListener="#{assocSimplesCDIBean.save()}" oncomplete="PF('dialogModificar').show();"
+                        update=":formEditar">
+                        <f:setPropertyActionListener target="#{assocSimplesCDIBean.assocSimple}" 
+                                                     value="#{tabelaMostrarAssocS}"/>
+                    </p:commandButton>                    
+                </p:column>
+                
+                  <p:column>
+                    <p:commandButton value="Eliminar" oncomplete="PF('dialogEliminar').show();"
+                        update=":formEliminar">
+                        <f:setPropertyActionListener target="#{assocSimplesCDIBean.assocSimple}" 
+                                                     value="#{tabelaMostrarAssocS}"/>
+                    </p:commandButton>                    
+                </p:column>
+                
+            </p:dataTable>
+        </form>
+        
+        
+        
+        <p:dialog id="dialogo" header="Modificar Dados" widgetVar="dialogModificar" showEffect="explode"
+                  hideEffect="explode" modal="true">
+            <h:form id="formEditar">
+                <p:panelGrid columns="2" style="position: absolute; top:100px; left: 400px;">
+
+                    <f:facet name="header">
+                        <h:outputText value="Cadastrar Novo Associado" />
+                    </f:facet>
+
+                    <p:outputLabel value="Nome Associado:" for="nomeAssocSimples" />
+                    <p:inputText id="nomeAssocSimples" value="#{assocSimplesCDIBean.assocSimple.nome}" 
+                                 title="Digite o Nome Completo" required="true" 
+                                 requiredMessage="The NomeAssocSimples field is required."/>
+
+                    <p:outputLabel value="BI:" for="biSimples" />
+                    <p:inputText id="biSimples" value="#{assocSimplesCDIBean.assocSimple.numBi}" 
+                                 title="Digite o Número do BI" required="true" requiredMessage="The BiSimples field is required."/>
+
+                    <p:outputLabel value="Telefone:" for="telAssocSimples" />
+                    <p:inputText id="telAssocSimples" value="#{assocSimplesCDIBean.assocSimple.telefone}" 
+                                 title="Digite o Número de Telefone" />
+
+                    <p:outputLabel value="Data de Nascimento" for="dataNascAssocSimples" />
+                    <p:calendar id="dataNascAssocSimples" value="#{assocSimplesCDIBean.assocSimple.datNasc}" 
+                                title="Digite a Data de Nascimento" 
+                                mode="popup" showOn="button" pattern="dd/MM/yyyy"/>
+
+                    <p:outputLabel value="Data de Cadastro:" for="dataCadastAssocSimples" />
+                    <p:calendar id="dataCadastAssocSimples" value="#{assocSimplesCDIBean.assocSimple.datCastro}" 
+                                title="Digite a Data do Cadastro" 
+                                mode="popup" showOn="button" pattern="dd/MM/yyyy"
+                                required="true" requiredMessage="The NomeAssocSimples field is required."/>                
+
+                    <p:outputLabel value="Cargo:" for="cargoAssocSimples" />
+                    <p:inputText id="cargoAssocSimples"  value="#{assocSimplesCDIBean.assocSimple.cargo}" 
+                                 title="Digite o Cargo, caso tenha." required="false"/>
+
+                    <p:outputLabel value="Data do Cargo:" for="datCargo" />
+                    <p:calendar id="datCargo" value="#{assocSimplesCDIBean.assocSimple.datCargo}"
+                                title="Data que ocupou o Cargo" required="false" mode="popup" showOn="button" pattern="dd/MM/yyyy"/>
+
+                    <f:facet name="footer">
+                        <p:toolbar>
+                            <p:toolbarGroup align="right">
+                                <p:commandButton value="Actualizar Cadastro"
+                                                 actionListener="#{assocSimplesCDIBean.eliminar()}"
+                                                 icon="ui-icon-disk" update="@form" 
+                                                 oncomplete="PF('dialogModificar').hide();"/>
+                                
+                                <p:commandButton value="Cancelar"
+                                                 onclick="PF('dialogModificar').hide();"
+
+                                                 icon="ui-icon-disk" update="@form" />
+
+                            </p:toolbarGroup>                        
+                        </p:toolbar>
+
+                    </f:facet>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        
+        <p:dialog id="dialogo2" header="Eliminar Dados" widgetVar="dialogEliminar" showEffect="explode"
+                  hideEffect="explode" modal="true">
+            <h:form id="formEliminar">
+                <h:outputText value="Deseja Eliminar esse Registro?"/>
+                <p:commandButton value="Sim" actionListener="#{assocSimplesCDIBean.eliminar()}"
+                                 update="@form" oncomplete="PF('dialogEliminar').hide();"/>
+                <p:commandButton value="Não" onclick="PF('dialogEliminar').hide();"/>
+
+            </h:form>
+        </p:dialog>
+        
+    </h:body>
+</html>
+

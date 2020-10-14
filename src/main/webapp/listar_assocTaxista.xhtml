@@ -1,0 +1,216 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>listar_assoc_Taxista</title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <p:menubar>
+
+                <p:menuitem value="Página Principal" outcome="home" icon="ui-icon-home"> 
+                </p:menuitem>             
+
+                <p:submenu label="Cadastrar" icon="ui-icon-plus">
+                    <p:menuitem value="Associado Taxista" outcome="cadastrarAssocT" /> 
+                    <p:menuitem value="Associado Simples" outcome="cadastrarAssocS"/> 
+                </p:submenu>  
+
+                <p:submenu label="Registrar" icon="ui-icon-plus">                   
+                    <p:menuitem value="Relátorio"/>
+                    <p:menuitem value="Cota" outcome="inserir-cota"/>
+                    <p:menuitem value="Carro" outcome="inserir-carro"/>
+                </p:submenu>
+
+                <p:submenu label="Visualizar">
+
+                    <p:submenu label="Associado">
+                        <p:menuitem value="Taxista"/>
+                        <p:menuitem value="Simples" outcome="listar_assocSimples"/>
+                        <p:menuitem value="Todos" />
+                    </p:submenu>
+
+                    <p:menuitem value="Relátorio"/>
+                    <p:menuitem value="Cota" outcome="listar_cota"/>
+                    <p:menuitem value="Carro" outcome="listar_carro"/>
+                </p:submenu>   
+
+                <p:submenu label="Pesquisar" icon="ui-icon-search" >  
+                    <p:menuitem value="Telefone" url="#"/>
+                    <p:menuitem value="Carro" url="#"/>
+                    <p:menuitem value="Associado" url="#"/>
+                </p:submenu>  
+            </p:menubar> 
+
+        </h:form>
+
+
+
+        <h:form>
+            <p:panel>
+                <b:dataTable value="#{assocTaxistaCDIBean.listaAssocTaxista}" var="m"
+                             excel="true"
+                             csv="true"
+                             pdf="true"
+                             columnVisibility="true"
+                             copy="true"
+                             print="true">
+
+                    <b:dataTableColumn value="#{m.idAssociadoT}"  />
+                    <b:dataTableColumn value="#{m.nome}" />
+                    <b:dataTableColumn value="#{m.numBi}" />
+                    <b:dataTableColumn value="#{m.cartaCond}" />
+                    <b:dataTableColumn value="#{m.telefone}" />
+                    <b:dataTableColumn value="#{m.datNasc}" />
+                    <b:dataTableColumn value="#{m.datCastro}" />
+                    <b:dataTableColumn value="#{m.cargo}" />
+                    <b:dataTableColumn value="#{m.datCargo}" />
+
+                </b:dataTable>
+            </p:panel>
+        </h:form>
+        
+        <form>
+            <p:dataTable id="tabelaMostrarAssocT" var="assocT" value="#{assocTaxistaCDIBean.listaAssocTaxista}"
+                         emptyMessage="Não há dados de Associados Taxista">
+                
+                <p:column headerText="Número do Associado">
+                    <h:outputText value="#{assocT.idAssociadoT}"/>
+                </p:column>
+                
+                 <p:column headerText="Nome Completo">
+                     <h:outputText value="#{assocT.nome}"/>
+                </p:column>
+                
+                 <p:column headerText="Número do BI">
+                     <h:outputText value="#{assocT.numBi}"/>
+                </p:column>
+                
+                 <p:column headerText="Telefone">
+                     <h:outputText value="#{assocT.telefone}"/>
+                </p:column>
+                
+                 <p:column headerText="Data de Nascimento">
+                     <h:outputText value="#{assocT.datNasc}"/>
+                </p:column>
+                
+                 <p:column headerText="Data de Cadastro">
+                     <h:outputText value="#{assocT.datCastro}"/>
+                </p:column>
+                
+                 <p:column headerText="Cargo">
+                     <h:outputText value="#{assocT.cargo}"/>
+                </p:column>
+                
+                 <p:column headerText="Data da Ocupação do Cargo">
+                     <h:outputText value="#{assocT.datCargo}"/>
+                </p:column>
+                
+                 <p:column>
+                     <p:commandButton value="Modificar" actionListener="#{assocTaxistaCDIBean.save()}" oncomplete="PF('dialogModificar').show();"
+                        update=":formEditar">
+                         <f:setPropertyActionListener target="#{assocTaxistaCDIBean.assocTaxista}" 
+                                                     value="#{tabelaMostrarAssocT}"/>
+                    </p:commandButton>                    
+                </p:column>
+                
+                  <p:column>
+                    <p:commandButton value="Eliminar" oncomplete="PF('dialogEliminar').show();"
+                        update=":formEliminar">
+                        <f:setPropertyActionListener target="#{assocTaxistaCDIBean.assocTaxista}" 
+                                                     value="#{tabelaMostrarAssocT}"/>
+                    </p:commandButton>                    
+                </p:column>
+                
+            </p:dataTable>
+        </form>
+        
+        
+        
+        <p:dialog id="dialogo" header="Modificar Dados" widgetVar="dialogModificar" showEffect="explode"
+                  hideEffect="explode" modal="true">
+            <h:form id="formEditar">
+                <p:panelGrid columns="2" style="position: absolute; top:100px; left: 400px;">
+
+                    <f:facet name="header">
+                        <h:outputText value="Cadastrar Novo Associado" />
+                    </f:facet>
+
+                    <p:outputLabel value="Nome Associado:" for="nomeAssocT" />
+                    <p:inputText id="nomeAssocT" value="#{assocTaxistaCDIBean.assocTaxista.nome}" 
+                                 title="Digite o Nome Completo" required="true" 
+                                 requiredMessage="The NomeAssocSimples field is required."/>
+
+                    <p:outputLabel value="BI:" for="biTaxista" />
+                    <p:inputText id="biTaxista" value="#{assocTaxistaCDIBean.assocTaxista.numBi}" 
+                                 title="Digite o Número do BI" required="true" requiredMessage="The BiSimples field is required."/>
+
+                    <p:outputLabel value="Número da Carta de Condução:" for="numConducao" />
+                    <p:inputText id="numConducao" value="#{assocTaxistaCDIBean.assocTaxista.cartaCond}" 
+                                 title="Digite o Número da Carta de Condução" required="true" requiredMessage="The numConducao  field is required."/>
+
+                    
+                    <p:outputLabel value="Telefone:" for="telAssocT" />
+                    <p:inputText id="telAssocT" value="#{assocTaxistaCDIBean.assocTaxista.telefone}" 
+                                 title="Digite o Número de Telefone" />
+
+                    <p:outputLabel value="Data de Nascimento" for="dataNascAssocT" />
+                    <p:calendar id="dataNascAssocT" value="#{assocTaxistaCDIBean.assocTaxista.datNasc}" 
+                                title="Digite a Data de Nascimento" 
+                                mode="popup" showOn="button" pattern="dd/MM/yyyy"/>
+
+                    <p:outputLabel value="Data de Cadastro:" for="dataCadastAssocT" />
+                    <p:calendar id="dataCadastAssocT" value="#{assocTaxistaCDIBean.assocTaxista.datCastro}" 
+                                title="Digite a Data do Cadastro" 
+                                mode="popup" showOn="button" pattern="dd/MM/yyyy"
+                                required="true" requiredMessage="The NomeAssocSimples field is required."/>                
+
+                    <p:outputLabel value="Cargo:" for="cargoAssocT" />
+                    <p:inputText id="cargoAssocT"  value="#{assocTaxistaCDIBean.assocTaxista.cargo}" 
+                                 title="Digite o Cargo, caso tenha." required="false"/>
+
+                    <p:outputLabel value="Data do Cargo:" for="datCargo" />
+                    <p:calendar id="datCargo" value="#{assocTaxistaCDIBean.assocTaxista.datCargo}"
+                                title="Data que ocupou o Cargo" required="false" mode="popup" showOn="button" pattern="dd/MM/yyyy"/>
+
+                    <f:facet name="footer">
+                        <p:toolbar>
+                            <p:toolbarGroup align="right">
+                                <p:commandButton value="Actualizar Cadastro"
+                                                 actionListener="#{assocTaxistaCDIBean.assocTaxista.eliminar()}"
+                                                 icon="ui-icon-disk" update="@form" 
+                                                 oncomplete="PF('dialogModificar').hide();"/>
+                                
+                                <p:commandButton value="Cancelar"
+                                                 onclick="PF('dialogModificar').hide();"
+
+                                                 icon="ui-icon-disk" update="@form" />
+
+                            </p:toolbarGroup>                        
+                        </p:toolbar>
+
+                    </f:facet>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        
+        <p:dialog id="dialogo2" header="Eliminar Dados" widgetVar="dialogEliminar" showEffect="explode"
+                  hideEffect="explode" modal="true">
+            <h:form id="formEliminar">
+                <h:outputText value="Deseja Eliminar esse Registro?"/>
+                <p:commandButton value="Sim" actionListener="#{assocTaxistaCDIBean.eliminar()}"
+                                 update="@form" oncomplete="PF('dialogEliminar').hide();"/>
+                <p:commandButton value="Não" onclick="PF('dialogEliminar').hide();"/>
+
+            </h:form>
+        </p:dialog>
+        
+    </h:body>
+</html>
+

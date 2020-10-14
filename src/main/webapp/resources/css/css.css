@@ -1,0 +1,98 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 15/09/2020, 21:37:22
+    Author     : GENATCHI
+*/
+body { background: #f5f5f5; } /* cor de fundo da página */
+.barrinha-superior {
+    height: 4px;
+    background: #369caf; /* fallback para navegadores que não suportam gradientes */
+    background-image: linear-gradient( to right, #369caf 33.33%, #e37900 33.33%,
+        #e37900 66.66%, #af2d22 66.66%, #af2d22 );
+    /* use a mesma declaração com uso de prefixos proprietários se for o caso */
+}
+#nav-superior { background:#fff; }
+#nav-superior li a { padding:2px 4px; }
+#nav-superior li a:hover { color:#00f; }
+@media (min-width: 1px) {
+    .navbar {
+        min-height:auto;
+        margin:0;
+        border: none;
+    }
+    .navbar li a { color:#333; }
+}
+
+body { background: #f5f5f5 url(/imagens/400.png) repeat-x; }
+#barra1 { background: #64a7b7; padding: 20px; }
+.texto-logo { font-size: 120%; color:#fff; }
+
+#barraPrincipal { margin-bottom:20px; background:#7bb3c1!important; }
+#barraPrincipal li a {
+    font-size:80%;
+    text-transform:uppercase;
+    padding:5px;
+    color:#fff;
+}
+a:hover { text-decoration:none; }
+#barraPrincipal li ul li a { color:#333; }
+
+.destaques img { width:100%; height: auto; }
+.destaques figcaption {
+    font-size:130%;
+    background:#fff;
+    min-height:100px;
+    padding:10px 20px;
+}
+.bc1 { border-bottom: 6px solid #e1734a; }
+.cc1 { display:block; color: #e1734a; }
+.bc2 { border-bottom: 6px solid #8d9b31; }
+.cc2 { display:block; color: #8d9b31; }
+.bc3 { border-bottom: 6px solid #4476ab; }
+.cc3 { display:block; color: #4476ab; }
+.bc4 { border-bottom: 6px solid #9c6496; }
+.cc4 { display:block; color: #9c6496; }
+
+.noticias {
+    position:relative;
+    background:#333;
+    padding: 10px 0;
+    margin-top:20px;
+}
+.noticias h3 {
+    font-size:90%;
+    color: #999;
+    text-transform:uppercase;
+}
+
+.noticias a {
+    display:block;
+    font-size:150%;
+    color:#fff;
+}
+.noticias :hover { color:#ccc; }
+:hover { text-decoration:none; }
+.mais-noticias {
+    width:160px;;
+    font-size:100%;
+    text-align:center;
+    background:#666;
+    position:absolute;
+    left:50%;
+    bottom:-10px;
+    margin-left:-80px;
+}
+@media screen and (max-width:1200px) {
+    body {
+        background-image:none;
+    }
+}
+@media screen and (max-width:992px) {
+    form[role="search"] {
+        float:none!important;
+    }
+}

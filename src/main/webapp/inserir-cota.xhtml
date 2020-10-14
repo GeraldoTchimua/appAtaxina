@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:menubar>
+
+                <p:menuitem value="Página Principal" outcome="home" icon="ui-icon-home"> 
+                </p:menuitem>             
+
+                <p:submenu label="Cadastrar" icon="ui-icon-plus">
+                    <p:menuitem value="Associado Taxista" outcome="cadastrarAssocT" /> 
+                    <p:menuitem value="Associado Simples" outcome="cadastrarAssocS"/> 
+                </p:submenu>  
+
+                <p:submenu label="Registrar" icon="ui-icon-plus">                   
+                    <p:menuitem value="Relátorio" />
+                    <p:menuitem value="Cota" outcome="inserir-cota"/>
+                    <p:menuitem value="Carro" outcome="inserir-carro"/>
+                </p:submenu>
+
+                <p:submenu label="Visualizar">
+
+                    <p:submenu label="Associado">
+                        <p:menuitem value="Taxista"/>
+                        <p:menuitem value="Simples" outcome="listar_assocSimples"/>
+                        <p:menuitem value="Todos" />
+                    </p:submenu>
+
+                    <p:menuitem value="Relátorio" />
+                    <p:menuitem value="Cota" outcome="listar_cota"/>
+                    <p:menuitem value="Carro" outcome="listar_carro"/>
+                </p:submenu>   
+
+                <p:submenu label="Pesquisar" icon="ui-icon-search" >  
+                    <p:menuitem value="Telefone" url="#"/>
+                    <p:menuitem value="Carro" url="#"/>
+                    <p:menuitem value="Associado" url="#"/>
+                </p:submenu>  
+            </p:menubar> 
+
+        </h:form>
+
+
+
+        <h:form id="formCadastrarCota">
+
+            <p:panelGrid columns="2" style="position: absolute; top:100px; left: 400px;">
+
+                <f:facet name="header">
+                    <h:outputText value="Cadastrar Novo Associado" />
+                </f:facet>
+
+                <p:outputLabel value="Nome do Taxista:" for="taxista" />
+                <p:selectOneMenu id="taxista" value="#{cotaCDIBean.cota.nomeTaxista}" 
+                                 converter="CotaConverter" required="true" 
+                                 requiredMessage="Campo obrigatório" style="width: 250px;" 
+                                 filter="true">
+                    <f:selectItem itemLabel="Seleccione" />
+                    <f:selectItems value="#{carroCDIBean.selectTaxistas}"  />
+                </p:selectOneMenu>  
+
+
+
+                <p:outputLabel value="Valor da Cota:" for="valor" />
+                <p:inputText id="valor" value="#{cotaCDIBean.cota.valor}" 
+                             title="Digite a quantia" required="true" 
+                             requiredMessage="The BiSimples field is required."/>
+
+
+                <p:outputLabel value="Data: "  for="dataCota"/>
+                <p:calendar id="dataCota" value="#{cotaCDIBean.cota.datCota}" 
+                            title="Digite a data" required="true" 
+                            navigator="true" showOn="button"
+                             requiredMessage="The NomeAssocSimples field is required."/>
+
+
+                <f:facet name="footer">
+                    <p:toolbar>
+                        <p:toolbarGroup align="right">
+                            <p:commandButton value="Cadastrar"
+                                             action="#{cotaCDIBean.save()}"
+                                             icon="ui-icon-disk" update="@form" />
+                        </p:toolbarGroup>                        
+                    </p:toolbar>
+
+                </f:facet>
+            </p:panelGrid>
+        </h:form>
+
+
+
+
+    </h:body>
+</html>
+
